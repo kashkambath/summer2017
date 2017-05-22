@@ -1,4 +1,4 @@
-#include <LiquidCrystal.h>
+#include <LiquidCrystalM.h>
 #include <Keypad.h>
 
 const byte ROWS = 4; //four rows
@@ -14,7 +14,7 @@ byte rowPins[ROWS] = {7, 6, 5, 4}; //connect to the row pinouts of the keypad
 byte colPins[COLS] = {3, 2, A4, A5}; //connect to the column pinouts of the keypad
 
 Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS); 
-LiquidCrystal lcd(8,9,10,11,12,13);
+LiquidCrystalM lcd(8,9,10,11,12,13);
 int countH, countG, letter, c1, c2;
 boolean Home, Guest, score, scoreSet;
 char x;
@@ -43,8 +43,9 @@ void loop() {
   
   if (key == 'A') { //if A is pushed, go to home mode
     Home=true;
-    lcd.setCursor(15,0); //print * to indicate at home mode
-    lcd.print("*");
+//    lcd.setCursor(15,0); //print * to indicate at home mode
+//    lcd.print("*");
+    lcd.printM(15,0,"*");
   }
   if(key == 'B'){ //if B is pushed, go to guest mode
     Guest=true;
