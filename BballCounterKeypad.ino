@@ -53,17 +53,14 @@ void loop() {
     char key = customKeypad.getKey(); //obtains the character of the key pressed
     if(key == '2'){ //if 2 is pushed, add two 
       add2H();
-      delay(250);
       dispScore();
     }
     if(key == '3'){ //if 3 is pushed, add three
       add3H();
-      delay(250);
       dispScore();
     }
     if(key == '1'){ //if 1 is pushed, subtract one
       remH();
-      delay(250);
       dispScore();
     }
     if(key == '*'){ //if * is pushed, exit mode
@@ -88,22 +85,19 @@ void loop() {
     char key = customKeypad.getKey(); //obtains the character of the key pressed
     if(key == '2'){ //if 2 is pushed, add two
       add2G();
-      delay(250);
       dispScore();
     }
     if(key == '3'){ //if 3 is pushed, add three
       add3G();
-      delay(250);
       dispScore();
     }
     if(key == '1'){ //if 1 is pushed, subtract one
       remG();
-      delay(250);
       dispScore();
     }
     if(key == '*'){ //if * is pushed, exit mode
-      Guest = false; 
       resetModeG();
+      Guest = false; 
     }
     if(key == '0'){ //if 0 is pushed, total reset
       reset();
