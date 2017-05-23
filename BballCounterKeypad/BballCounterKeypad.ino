@@ -50,9 +50,8 @@ void loop() {
     printN(15,1,"*");
   }
   if(key == '0'){ //if 0 is pushed, total reset
-    reset();
+    scoreSet = 0;
     setup();
-    loop();
   }
   while(Home==true){ //home mode
     char key = customKeypad.getKey(); //obtains the character of the key pressed
@@ -172,6 +171,9 @@ void dispScore(){ //displays scores
   printN(0,1,"Guest: ");
   printN(7,0,String(countH));
   printN(7,1,String(countG));
+  printN(6,0," ");
+  printN(9,0," ");
+  printN(10,0," ");
 }
 
 void checkWinH(){
@@ -186,8 +188,6 @@ void checkWinH(){
           lcd.print(countG);
           char key = customKeypad.getKey();
           if(key == '0'){
-            lcd.clear();
-            reset();
             setup();
             loop();
           }
@@ -202,7 +202,7 @@ void checkWinH(){
         lcd.print(" - ");
         lcd.print(countG);
         char key = customKeypad.getKey();
-        if(key == '0'){
+        if(key == '5'){
           reset();
           setup();
           loop();
@@ -223,8 +223,6 @@ void checkWinG(){
           lcd.print(countG);
           char key = customKeypad.getKey();
           if(key == '0'){
-            lcd.clear();
-            reset();
             setup();
             loop();
           }
@@ -240,8 +238,6 @@ void checkWinG(){
         lcd.print(countG);
         char key = customKeypad.getKey();
         if(key == '0'){
-          lcd.clear();
-          reset();
           setup();
           loop();
         }
