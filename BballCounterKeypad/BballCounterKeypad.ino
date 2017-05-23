@@ -43,13 +43,11 @@ void loop() {
   
   if (key == 'A') { //if A is pushed, go to home mode
     Home=true;
-    lcd.setCursor(15,0); //print * to indicate at home mode
-    lcd.print("*");
+    printN(15,0,"*");
   }
   if(key == 'B'){ //if B is pushed, go to guest mode
     Guest=true;
-    lcd.setCursor(15,1); //print * to indicate at guest mode
-    lcd.print("*");
+    printN(15,1,"*");
   }
   if(key == '0'){ //if 0 is pushed, total reset
     reset();
@@ -75,8 +73,7 @@ void loop() {
     if(key == '1'){ //if 1 is pushed, subtract one
       remH();
       if (countH == 9){
-        lcd.setCursor(8,0);
-        lcd.print(" ");
+        printN(8,0," ");
       }
       dispScore();
     }
@@ -92,8 +89,7 @@ void loop() {
     if(key == 'B'){ //change mode to guest
       Guest = true;
       resetModeH();
-      lcd.setCursor(15,1);
-      lcd.print("*");
+      printN(15,1,"*");
       Home = false;
     }
   }//end home mode
@@ -117,8 +113,7 @@ void loop() {
     if(key == '1'){ //if 1 is pushed, subtract one
       remG();
       if(countG == 9) {
-        lcd.setCursor(8,1);
-        lcd.print(" ");
+        printN(8,1," ");
       }
       dispScore();
     }
@@ -134,8 +129,7 @@ void loop() {
     if(key == 'A'){ //change mode to home
       Home = true;
       resetModeG();
-      lcd.setCursor(15,0);
-      lcd.print("*");
+      printN(15,0,"*");
       Guest = false;
     }
   }//end guest mode
@@ -150,13 +144,10 @@ void loop() {
     if(int(key) != 0 && letter > 12 && key != 'D'){
       scoreSet = true; //only true when custom score inputted
       if(letter == 13){
-        lcd.setCursor(letter,0);
-        lcd.print(x);
-        lcd.setCursor(letter+1,0);
-        lcd.print(key);
+        printN(letter,0,String(x));
+        printN(letter+1,0,String(key));
       } else {
-        lcd.setCursor(letter,0);
-        lcd.print(key);
+        printN(letter,0,String(key));
       }
       if(letter==13){
         c1 = c2;
@@ -177,14 +168,10 @@ void loop() {
 }//end void loop
 
 void dispScore(){ //displays scores
-  lcd.setCursor(0,0);
-  lcd.print("Home: ");
-  lcd.setCursor(0,1);
-  lcd.print("Guest: ");
-  lcd.setCursor(7,0);
-  lcd.print(countH);
-  lcd.setCursor(7,1);
-  lcd.print(countG);
+  printN(0,0,"Home: ");
+  printN(0,1,"Guest: ");
+  printN(7,0,String(countH));
+  printN(7,1,String(countG));
 }
 
 void checkWinH(){
@@ -194,8 +181,7 @@ void checkWinH(){
           delay(1000);
           lcd.clear();
           lcd.print("Home Wins!");
-          lcd.setCursor(0,1);
-          lcd.print(countH);
+          printN(0,1,String(countH));
           lcd.print(" - ");
           lcd.print(countG);
           char key = customKeypad.getKey();
@@ -212,8 +198,7 @@ void checkWinH(){
         delay(1000);
         lcd.clear();
         lcd.print("Home Wins!");
-        lcd.setCursor(0,1);
-        lcd.print(countH);
+        printN(0,1,String(countH));
         lcd.print(" - ");
         lcd.print(countG);
         char key = customKeypad.getKey();
@@ -233,8 +218,7 @@ void checkWinG(){
           delay(1000);
           lcd.clear();
           lcd.print("Guest Wins!");
-          lcd.setCursor(0,1);
-          lcd.print(countH);
+          printN(0,1,String(countH));
           lcd.print(" - ");
           lcd.print(countG);
           char key = customKeypad.getKey();
@@ -251,8 +235,7 @@ void checkWinG(){
         delay(1000);
         lcd.clear();
         lcd.print("Guest Wins!");
-        lcd.setCursor(0,1);
-        lcd.print(countH);
+        printN(0,1,String(countH));
         lcd.print(" - ");
         lcd.print(countG);
         char key = customKeypad.getKey();
@@ -293,22 +276,21 @@ void remG(){
 void reset(){ //hard reset, removes * and sets both scores to 0 
   countH = 0;
   countG = 0;
-  lcd.setCursor(15,0);
-  lcd.print(" ");
-  lcd.setCursor(15,1);
-  lcd.print(" ");
-  lcd.setCursor(8,0);
-  lcd.print(" ");
-  lcd.setCursor(8,1);
-  lcd.print(" ");
+  printN(15,0," ");
+  printN(15,1," ");
+  printN(8,0," ");
+  printN(8,1," ");
 }
 
 void resetModeH(){ //removes * in home row
-  lcd.setCursor(15,0);
-  lcd.print(" ");
+  printN(15,0," ");
 }
 
 void resetModeG(){ //removes * in guest row
-  lcd.setCursor(15,1);
-  lcd.print(" ");
+  printN(15,1," ");
+}
+
+void printN(int x, int y, String n){
+  lcd.setCursor(x,y);
+  lcd.print(n);
 }
