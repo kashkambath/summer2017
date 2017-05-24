@@ -26,7 +26,7 @@ void setup() {
   Home = false; Guest = false; Home1 = false; Guest1 = false;
   score = false; scoreSet = false; oneTwo = false;
   c1 = 0; c2 = 0; x = 'x';
-  
+
   lcd.begin(16,2); //initialize LCD
   lcd.clear();
 }
@@ -36,31 +36,48 @@ void loop() {
   dispScore(); //displays score
   char key = customKeypad.getKey(); //obtains the character of the key pressed
   
-  if (key == 'A') { //if A is pushed, go to home mode
+  if (key == 'A') { //if A is pushed, go to home mode (2's and 3's)
     Home=true;
     printN(15,0,"*");
   }
-  if(key == 'B'){ //if B is pushed, go to guest mode
+  if(key == 'B'){ //if B is pushed, go to guest mode (2's and 3's)
     Guest=true;
     printN(15,1,"*");
   }
   if(key == '0'){ //if 0 is pushed, total reset
-    scoreSet = 0;
     setup();
   }
-  while(Home==true){ //home mode
+  if(key == 'C'){ //if C is pushed, set the target score
+    lcd.clear();
+    lcd.print("Enter score:");
+    score = true;
+  }
+  if(key=='D'){ //if D is pushed, enter one's and two's mode
+    lcd.clear();
+    lcd.print("One's and Two's");
+    delay(3000);
+    lcd.clear();
+    oneTwo = true;
+  }
+  while(Home==true){ //home mode (2's and 3's)
     char key = customKeypad.getKey(); //obtains the character of the key pressed
     if(key == '2'){ //if 2 is pushed, add two 
+      if(countH<0){
+        printN(8,0," ");
+      }
       countH+=2;
       dispScore();
-      if(scoreSet==true){
+      if(scoreSet==true){ //if final score is inputted, check if home wins
         checkWinH();
       }
     }
     if(key == '3'){ //if 3 is pushed, add three
+      if(countH<0){
+        printN(8,0," ");
+      }
       countH+=3;
       dispScore();
-      if(scoreSet==true){
+      if(scoreSet==true){ //if final score is inputted, check if home wins
         checkWinH();
       }
     }
@@ -73,34 +90,40 @@ void loop() {
     }
     if(key == '*'){ //if * is pushed, exit mode
       Home = false; 
-      resetModeH();
+      printN(15,0," ");
     }
     if(key == '0'){ //if 0 is pushed, total reset
       reset();
       dispScore();
       Home = false;
     }
-    if(key == 'B'){ //change mode to guest
+    if(key == 'B'){ //change mode to guest (2's and 3's)
       Guest = true;
-      resetModeH();
+      printN(15,0," ");
       printN(15,1,"*");
       Home = false;
     }
-  }//end home mode
+  }//end home mode (2's and 3's)
   
   while(Guest==true){//guest mode
     char key = customKeypad.getKey(); //obtains the character of the key pressed
     if(key == '2'){ //if 2 is pushed, add two
+      if(countG<0){
+        printN(8,1," ");
+      }
       countG+=2;
       dispScore();
-      if(scoreSet==true){
+      if(scoreSet==true){ //if final score is inputted, check if guest wins
         checkWinG();
       }
     }
     if(key == '3'){ //if 3 is pushed, add three
+      if(countG<0){
+        printN(8,1," ");
+      }
       countG+=3;
       dispScore();
-      if(scoreSet==true){
+      if(scoreSet==true){ //if final score is inputted, check if guest wins
         checkWinG();
       }
     }
@@ -112,7 +135,7 @@ void loop() {
       dispScore();
     }
     if(key == '*'){ //if * is pushed, exit mode
-      resetModeG();
+      printN(15,1," ");
       Guest = false; 
     }
     if(key == '0'){ //if 0 is pushed, total reset
@@ -120,20 +143,15 @@ void loop() {
       dispScore();
       Guest = false;
     }
-    if(key == 'A'){ //change mode to home
+    if(key == 'A'){ //change mode to home (2's and 3's)
       Home = true;
-      resetModeG();
+      printN(15,1," ");
       printN(15,0,"*");
       Guest = false;
     }
-  }//end guest mode
-  
-  if(key == 'C'){ //if C is pushed, set the target score
-    lcd.clear();
-    lcd.print("Enter score:");
-    score = true;
-  }
-  while(score==true){ //enter score mode
+  }//end guest mode (2's and 3's)
+
+  while(score==true){ //enter score mode (2's and 3's)
     char key = customKeypad.getKey();
     if(int(key) != 0 && letter > 12 && key != 'D'){
       scoreSet = true; //only true when custom score inputted
@@ -153,49 +171,51 @@ void loop() {
       }
       letter--;
     }
-    if(key == 'D'){ //if D is pushed, go back to main menu
+    if(key == 'D'){ //if D is pushed, exit score mode  
       lcd.clear();
       reset();
       score = false;
     }
-  }//end score mode
-
-  if(key=='D'){
-    lcd.clear();
-    lcd.print("One's and Two's");
-    delay(3000);
-    lcd.clear();
-    oneTwo = true;
-  }
-  while(oneTwo==true){ //enter one's and two's mode
+  }//end score mode (2's and 3's)
+  
+  while(oneTwo==true){ //start one's and two's mode
     dispScore(); //displays score
     char key = customKeypad.getKey(); //obtains the character of the key pressed
-  
-    if (key == 'A') { //if A is pushed, go to home mode
+    if (key == 'A') { //if A is pushed, go to home mode (1's and 2's)
       Home1=true;
       printN(15,0,"#");
     }
-    if(key == 'B'){ //if B is pushed, go to guest mode
+    if(key == 'B'){ //if B is pushed, go to guest mode (1's and 2's)
       Guest1=true;
       printN(15,1,"#");
     }
     if(key == '0'){ //if 0 is pushed, total reset
-      scoreSet = 0;
       setup();
     }
-   while(Home1==true){ //home mode
+    if(key == 'C'){ //if C is pushed, set the target score
+      lcd.clear();
+      lcd.print("Enter score:");
+      score = true;
+    }
+   while(Home1==true){ //home mode (1's and 2's)
     char key = customKeypad.getKey(); //obtains the character of the key pressed
-    if(key == '2'){ //if 2 is pushed, add two 
+    if(key == '2'){ //if 2 is pushed, add one 
+      if(countH<0){
+        printN(8,0," ");
+      }
       countH++;
       dispScore();
-      if(scoreSet==true){
+      if(scoreSet==true){ //if final score inputted, check if home wins
         checkWinH();
       }
     }
-    if(key == '3'){ //if 3 is pushed, add three
+    if(key == '3'){ //if 3 is pushed, add two
+      if(countH<0){
+        printN(8,0," ");
+      }
       countH+=2;
       dispScore();
-      if(scoreSet==true){
+      if(scoreSet==true){ //if final score inputted, check if home wins
         checkWinH();
       }
     }
@@ -206,36 +226,42 @@ void loop() {
       }
       dispScore();
     }
-    if(key == '#'){ //if * is pushed, exit mode
+    if(key == '#'){ //if # is pushed, exit mode
       Home1 = false; 
-      resetModeH();
+      printN(15,0," ");;
     }
     if(key == '0'){ //if 0 is pushed, total reset
       reset();
       dispScore();
       Home1 = false;
     }
-    if(key == 'B'){ //change mode to guest
+    if(key == 'B'){ //change mode to guest (1's and 2's)
       Guest1 = true;
-      resetModeH();
+      printN(15,0," ");
       printN(15,1,"#");
       Home1 = false;
     }
-  }//end home mode
+  }//end home mode (1's and 2's)
   
-  while(Guest1==true){//guest mode
+  while(Guest1==true){//guest mode (1's and 2's)
     char key = customKeypad.getKey(); //obtains the character of the key pressed
-    if(key == '2'){ //if 2 is pushed, add two
+    if(key == '2'){ //if 2 is pushed, add one
+      if(countG<0){
+        printN(8,1," ");
+      }
       countG++;
       dispScore();
-      if(scoreSet==true){
+      if(scoreSet==true){ //if final score inputted, check if guest wins
         checkWinG();
       }
     }
-    if(key == '3'){ //if 3 is pushed, add three
+    if(key == '3'){ //if 3 is pushed, add two
+      if(countG<0){
+        printN(8,1," ");
+      }
       countG+=2;
       dispScore();
-      if(scoreSet==true){
+      if(scoreSet==true){ //if final score inputted, check if guest wins
         checkWinG();
       }
     }
@@ -246,8 +272,8 @@ void loop() {
       }
       dispScore();
     }
-    if(key == '#'){ //if * is pushed, exit mode
-      resetModeG();
+    if(key == '#'){ //if # is pushed, exit mode
+      printN(15,1," ");;
       Guest1 = false; 
     }
     if(key == '0'){ //if 0 is pushed, total reset
@@ -255,19 +281,15 @@ void loop() {
       dispScore();
       Guest1 = false;
     }
-    if(key == 'A'){ //change mode to home
+    if(key == 'A'){ //change mode to home (1's and 2's)
       Home1 = true;
-      resetModeG();
+      printN(15,1," ");
       printN(15,0,"#");
       Guest1 = false;
     }
-  }//end guest mode
-  if(key == 'C'){ //if C is pushed, set the target score
-    lcd.clear();
-    lcd.print("Enter score:");
-    score = true;
-  }
-  while(score==true){ //enter score mode
+  }//end guest mode (1's and 2's)
+
+  while(score==true){ //enter score mode (1's and 2's)
     char key = customKeypad.getKey();
     if(int(key) != 0 && letter > 12 && key != 'D'){
       scoreSet = true; //only true when custom score inputted
@@ -292,7 +314,7 @@ void loop() {
       reset();
       score = false;
     }
-  }//end score mode
+  }//end score mode (1's and 2's)
   }//end one's and two's mode
 }//end void loop
 
@@ -363,15 +385,7 @@ void reset(){ //hard reset, removes * and sets both scores to 0
   printN(8,1," ");
 }
 
-void resetModeH(){ //removes * in home row
-  printN(15,0," ");
-}
-
-void resetModeG(){ //removes * in guest row
-  printN(15,1," ");
-}
-
-void printN(int x, int y, String n){
+void printN(int x, int y, String n){ //method to make printing easier and more compact
   lcd.setCursor(x,y);
   lcd.print(n);
 }
